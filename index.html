@@ -1,87 +1,31 @@
-Peter_pan_song="";
-Harry_potter_theme_song="";
-rightWrist_x = 0;
-rightWrist_y = 0;
-leftWrist_x = 0;
-leftWrist_y = 0;
-scoreleftWrist = 0;
-scorerightWrist = 0;
-song_Peter_pan = "";
-song_Harry_potter_theme = "";
+<!DOCTYPE html>
+<html>
+<head>
+    <style data-merge-styles="true"></style>
+	<title>AI MUSIC WEB APP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-function setup(){
-    canvas = createCanvas(600,530);
-    canvas.center();
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
+  <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script><style type="text/css" data-glamor=""></style>
 
-    video = createCapture(VIDEO);
-    video.hide();
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/addons/p5.sound.min.js"></script>
 
-    poseNet = ml5.poseNet(video,modelLoaded);
-    poseNet.on('pose',gotposes);
-}
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"></script>
 
-function preload(){
-    Peter_pan_song = loadSound("music2.mp3");
-    Harry_potter_theme_song = loadSound("music.mp3");
-}
-
-function draw(){
-    image(video,0,0,600,530);
-
-    fill("#00ff00");
-    stroke("#ff0000");
-
-    song_Peter_pan = Peter_pan_song.isPlaying();
-    console.log(song_Peter_pan);
-
-    song_Harry_potter_theme = Harry_potter_theme_song.isPlaying();
-    console.log(song_Harry_potter_theme);
-
-    if(scoreleftWrist > 0.2){
-        circle(leftWrist_x,leftWrist_y,20);
-        Harry_potter_theme_song.stop();
-        if(song_Peter_pan == false){
-            Peter_pan_song.play();
-        }
-        else{
-            console.log("Song Name: Peter Pan Song");
-            document.getElementById("song_id").innerHTML = "Song Name: Peter Pan Song";
-        }
-    }
-
-    if(scorerightWrist > 0.2){
-        circle(rightWrist_x,rightWrist_y,20);
-        Peter_pan_song.stop();
-        if(song_Harry_potter_theme == false){
-            Harry_potter_theme_song.play();
-        }
-        else{
-            console.log("Song Name: Harry Potter Theme Song");
-            document.getElementById("song_id").innerHTML = "Song Name: Harry Potter Theme Song";
-        }
-    }
-}
-
-function modelLoaded(){
-    console.log("poseNet Is Initialized");
-}
-
-function gotposes(results){
-    if(results.length > 0){
-        console.log(results);
-
-        scoreleftWrist = results[0].pose.keypoints[9].score;
-        console.log(scoreleftWrist);
-
-        scorerightWrist = results[0].pose.keypoints[10].score;
-        console.log(scorerightWrist);
-
-        leftWrist_x = results[0].pose.leftWrist.x;
-        leftWrist_y = results[0].pose.leftWrist.y;
-        console.log("leftWrist_x = "+leftWrist_x+" leftWrist_y = "+leftWrist_y);
-
-        rightWrist_x = results[0].pose.rightWrist.x;
-        rightWrist_y = results[0].pose.rightWrist.y;
-        console.log("rightWrist_x = "+rightWrist_x+" rightWrist_y = "+rightWrist_y);
-    }
-}
+</head>
+<body background="Background.jpg">
+    <center>
+        <h3 class="btn btn-warning heading">
+            AI MUSIC WEB APP
+            <br>
+            <span class="note">NOTE - Get your left-hand wrist in front of the webcam to play Peter Pan Song. Get your right-hand wrist in front of the webcam to play Harry Potter Theme Song.<br>Keep at least 2 feet distance from the webcam, so that your wrists are detected quickly</span>
+        </h3>
+        <h3 class="btn btn-danger song_name" id="song_id">Song Name</h3>
+    </center>
+    <script src="main.js"></script>
+</body>
+</html>
